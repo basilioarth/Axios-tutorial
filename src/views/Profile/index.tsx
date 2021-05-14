@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../screens/RootStackParamList';
+import api from '../../services/api';
 
 type profileScreenProp = StackNavigationProp<RootStackParamList, 'Profile'>;
 
@@ -15,10 +16,23 @@ export default function Profile() {
     const [telefone, setTelefone] = useState('');
 
     useEffect(() => {
+        async function login() {
+            try {
+                const response = await api.post('usuarios', {nome: 'Arthur', email: 'arthur@user.com', senha: '123'});
+                console.log(response.data)
+            } catch(error){
+                console.log("Deu errado!");
+                console.log(error);
+            }
+        }
+        
+        login();
+        /**
         setNome('Lucas');
         setEmail('lucas@gmail.com');
         setTelefone('3222-2222');
-    })
+        */
+    }, []);
 
 
     return (
