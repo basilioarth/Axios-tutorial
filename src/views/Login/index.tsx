@@ -3,15 +3,22 @@ import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../screens/RootStackParamList';
+import api from '../../services/api';
+import { AxiosError, AxiosResponse } from 'axios';
 
 type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>;
-
 
 export default function Login() {
     const navigation = useNavigation<loginScreenProp>();
 
     const [usuario, setUsuario] = useState('');
     const [senha, setSenha] = useState('');
+
+    async function login() {
+        api.post('usuarios', {nome: `${usuario}`, email: `${usuario}@user.com`, telefone: '(86) 3333-4444'})
+            .then((response: AxiosResponse) => navigation.navigate('Profile', response.data.id))
+            .catch((error: AxiosError) => console.log(error.message));
+    }
 
     return (
         <View style={styles.container}>
@@ -37,7 +44,7 @@ export default function Login() {
             <View style={styles.inputBox}>
                 <Button
                     title="FAZER LOGIN"
-                    onPress={() => navigation.navigate('Profile')}
+                    onPress={() => /*navigation.navigate('Profile')*/login()}
                 />
             </View>
         </View>

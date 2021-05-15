@@ -4,36 +4,27 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../screens/RootStackParamList';
 import api from '../../services/api';
+import { AxiosError, AxiosResponse } from 'axios';
 
 type profileScreenProp = StackNavigationProp<RootStackParamList, 'Profile'>;
 
-export default function Profile() {
+export default function Profile({route}) {
     const navigation = useNavigation<profileScreenProp>();
-
+    const [params] = useState(route.params)
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [telefone, setTelefone] = useState('');
 
     useEffect(() => {
-        async function login() {
-            try {
-                const response = await api.post('usuarios', {nome: 'Arthur', email: 'arthur@user.com', senha: '123'});
-                console.log(response.data)
-            } catch(error){
-                console.log("Deu errado!");
-                console.log(error);
-            }
-        }
-        
-        login();
-        /**
-        setNome('Lucas');
-        setEmail('lucas@gmail.com');
-        setTelefone('3222-2222');
-        */
+        api.get(`usuarios/${params}`)
+            .then((response: AxiosResponse) => {
+                setNome(response.data.nome)
+                setEmail(response.data.email)
+                setTelefone(response.data.telefone)
+            })
+            .catch((error: AxiosError) => console.log(error.message));
     }, []);
-
 
     return (
         <View style={styles.container}>
