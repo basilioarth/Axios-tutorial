@@ -1,29 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../screens/RootStackParamList';
-import api from '../../services/api';
 import { AxiosError, AxiosResponse } from 'axios';
+import api from '../../services/api';
+
 
 type profileScreenProp = StackNavigationProp<RootStackParamList, 'Profile'>;
+type RouteParams = {
+    Profile: {
+      userId: string;
+    };
+  };
 
-export default function Profile({route}) {
+export default function Profile() {
     const navigation = useNavigation<profileScreenProp>();
-    const [params] = useState(route.params)
+    const route = useRoute<RouteProp<RouteParams, 'Profile'>>();
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [telefone, setTelefone] = useState('');
 
     useEffect(() => {
-        api.get(`usuarios/${params}`)
+        api.get(`usuarios/${route.params}`)
             .then((response: AxiosResponse) => {
                 setNome(response.data.nome)
                 setEmail(response.data.email)
                 setTelefone(response.data.telefone)
             })
             .catch((error: AxiosError) => console.log(error.message));
+        
     }, []);
 
     return (

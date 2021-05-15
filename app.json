@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tutorial-react-native",
-    "slug": "tutorial-react-native",
+    "name": "tutorial-axios",
+    "slug": "tutorial-axios",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
